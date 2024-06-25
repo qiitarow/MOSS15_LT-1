@@ -4,14 +4,11 @@
 
 タイトル　「HAPI FHIR Starter ProjectのJPAサーバにJP_CoreのIGをインストールする」
 
-
 環境
 
 * Visual Studio Code
 * git
 * docker or finch
-
-
 
 解説
 
@@ -20,8 +17,7 @@
 * postgressをデータベースに指定したdockerの構成です。
 * hapi-extra-classesディレクトリはカスタマイズのためのインターセプターを置く場所です。（現在は空です。）
 * docker（ここでは、finchを利用）でコンテナを立ち上げます。
-
-
+* （コメント多いですが、ご容赦下さい。）
 
 コマンド例
 
@@ -32,8 +28,6 @@
 > git clone https://github.com/qiitarow/MOSS15-LT-1.git
 > finch compose up
 ```
-
-
 
 リンク
 
