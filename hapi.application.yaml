@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://db:5432/hapi'
+    username: admin
+    password: admin
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      # hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      # Dialect指定を最新版に変更（2024/05/23）
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
+      hibernate.search.enabled: false
+
+# the.package.containing.your.interceptor
+# hapi:
+#  fhir:
+#    custom-bean-packages: the.package.containing.your.interceptor
+#    custom-interceptor-classes: the.package.containing.your.interceptor.YourInterceptor
+
+# IGの設定例
+# versionが合わなかった（例　ips_1_0_0、でエラー）ので修正（ ips_1_1_0に変更、version: 1.1.0）2024/05/15
+# レジストリ（packages.fhir.org）からのインストール方法と、URLを指定してインストールする方法とがある。
+# hapi:
+#   fhir:
+#     implementationguides:
+#       ips_1_1_0:
+#         packageUrl: https://build.fhir.org/ig/HL7/fhir-ips/package.tgz
+#         name: hl7.fhir.uv.ips
+#         version: 1.1.0
+#         reloadExisting: false
+#         installMode: STORE_AND_INSTALL
+#         supported_resource_types:
+#           - Patient
+#           - Observation
+
+# JP Coreはレジストリに登録されていないので、URLを指定してインストールしなければならない。
+# https://jpfhir.jp/fhir/core/1.1.2/jp-core.r4-1.1.2-snap.tgz
+hapi:
+  fhir:
+    implementationguides:
+      jp-core_1_1_2:
+        packageUrl: https://jpfhir.jp/fhir/core/1.1.2/jp-core.r4-1.1.2-snap.tgz
+        name: jp-core.r4
+        version: 1.1.2
+        reloadExisting: false
+        installMode: STORE_AND_INSTALL
+        
+    # test at 2024/05/15
+    # hfql_enabled: true

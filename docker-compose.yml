@@ -1,0 +1,57 @@
+# 学習用環境のためのもの！！
+# 2024/04/30
+# version: '3.9' # V2以降は基本的に不要
+# docker-compose up -d で実行すると、コンテナがバックグランドで実行される
+
+services:
+  # FHIR JPA Seerver
+  # docker hubからイメージ”hapiproject/hapi"をpull
+  # ポートのバインドを行い、8080ポートでアクセス可能にする 
+  fhir:
+    container_name: hapi-fhir-jpaserver-starter-jpcore
+    image: "hapiproject/hapi:latest"
+    ports:
+      - "8080:8080"
+    configs:
+        # FHIR Serverの設定ファイル
+      - source: hapi
+        target: /app/config/application.yaml
+        # Interceptorの設定ファイル
+      - source: hapi-extra-classes
+        target: /app/extra-classes
+    command: java -jar /app/hapi-fhir-jpaserver-starter.jar
+    depends_on:
+      - db
+  
+  # Postgress DB
+  db:
+    # 名前を付けよう！
+    container_name: hapi-fhir-jpaserver-starter-jpcore-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: hapi
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+volumes:
+  db-volume:
+    external: true
+    name: hapi_fhir_starter_db-volume
+    # driver: local
+    # driver_opts:
+    #   type: none
+    #   device:
+    #   o: bind
+
+
+# configs
+configs:
+  # FHIR Serverの設定ファイル
+  hapi:
+     file: ./hapi.application.yaml
+  # FHIR ServerのInterceptorの設定ファイル
+  hapi-extra-classes:
+     file: ./hapi-extra-classes
